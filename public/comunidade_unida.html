@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Elo Comunitário | Comunidade Unida</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">← VOLTAR</a>
+            <span class="navbar-text text-white">Comunidade Unida</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h4 class="fw-bold">Compartilhe um Versículo</h4>
+                    <form id="formVersiculo">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Seu Nome</label>
+                            <input type="text" id="nomeMembro" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Versículo ou Palavra de Fé</label>
+                            <textarea id="textoVersiculo" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Enviar para o Mosaico</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow p-4">
+                    <h4 class="fw-bold mb-4">Mosaico de Fé Coletivo</h4>
+                    <div id="mosaicoCompleto" class="text-danger">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

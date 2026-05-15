@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Elo Comunitário | Confessionário Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">← VOLTAR AO INÍCIO</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow p-4">
+                    <h2 class="fw-bold text-center mb-4">Canal de Escuta Segura</h2>
+                    <p class="text-muted text-center small">Seu desabafo é anônimo. Após enviar, você receberá um <strong>Token</strong> para consultar a resposta futuramente.</p>
+                    
+                    <form id="formConfissao">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Seu Desabafo / Pedido de Orientação</label>
+                            <textarea id="mensagem" class="form-control" rows="6" required placeholder="Fique à vontade, Deus conhece seu coração..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">Enviar Anonimamente</button>
+                    </form>
+
+                    <div id="resultadoToken" class="mt-4 d-none alert alert-success">
+                        <p class="mb-1">Mensagem enviada com sucesso! Guarde seu Token:</p>
+                        <h4 id="tokenGerado" class="fw-bold text-center">XXXX-XXXX</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
