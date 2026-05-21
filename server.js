@@ -20,6 +20,15 @@ let versiculos = [
     { nome: "Irmã Maria", texto: "Tudo posso naquele que me fortalece." }
 ];
 
+//BANCO DE DADOS TEMPORÁRIO (Lista de Mensagens do Confessionário)
+let verciculo =[
+    { nome: "Irmão Michel", texto: "O Senhor é meu pastor, nada me faltará." },
+    { nome: "Irmã Maria", texto: "Tudo posso naquele que me fortalece." }
+]
+
+// ADICIONE ESTA LINHA PARA ARMAZENAR AS MENSAGENS DO CONFESSIONÁRIO
+let mensagensConfessario = [];
+
 // --- ROTAS DA API ---
 
 // 1. Rota para buscar todos os versículos
@@ -35,12 +44,41 @@ app.post('/api/postar-versiculo', (req, res) => {
     res.json({ success: true });
 });
 
-// 3. Rota do Confessionário (Gera Token)
+// 3. Rota do Confessionário (Gera Token e Salva Mensagem)
 app.post('/api/enviar-mensagem', (req, res) => {
     const { mensagem } = req.body;
-    const token = crypto.randomBytes(4).toString('hex').toUpperCase();
-    console.log(`[CONFISSÃO] Token: ${token} | Mensagem: ${mensagem}`);
-    res.json({ success: true, token: token });
+
+    let tokenUnico = false;
+    let token = '';
+
+    //Lógica para gerar um token aleatório e garantir que não é repetido
+    while (!tokenUnico) {
+        // gera 2 bytes aleatórios e converte para hexadecimal (ex: "A1B2")
+
+        const codigo = crypto.randomBytes(2).toString('hex').toUpperCase();
+        token = `CONSELHO-${codigo}`; // Fica no formato: CONSELHO-A8F3
+
+        // Verifica no nosso "banco" (array) se o token já existe
+        const tokenJaExiste = conselho.find(c => c.token === token);
+
+        if (!tokenJaExiste) {
+            tokenUnico = true; // Se não achou nenhum igual, o token é válido
+        }
+
+    }
+
+    // Salva a mensagem anônima, o token e deixa a resposta vazia
+    conselho.push({
+        token: token,
+        mensagem: mensagem,
+        resposta: '' // Fica vazio até o administrador responder
+    });
+
+    console.log(`[CONFISSÃO SALVA] Token: ${token} | Mensagem: ${mensagem}`);
+
+    //De volve o token para o front-end ( o script.js já estyá programado para mostrar isso na tela)
+    res.json({ success: true, token: token});
+
 });
 
 // 4. Rota de Doação
@@ -60,11 +98,9 @@ app.listen(PORT, () => {
 
 
 
-
-
 //inicio do novo código
 // No server.js, adicione um armazenamento para as mensagens inicio  --->
-let mensagensConfessario = []; 
+let mensagemIrmao = []; 
 
 // Atualize a rota de envio para salvar a mensagem
 app.post('/api/enviar-mensagem', (req, res) => {
@@ -72,7 +108,7 @@ app.post('/api/enviar-mensagem', (req, res) => {
     const token = crypto.randomBytes(4).toString('hex').toUpperCase();
     
     // Salva o objeto no "banco" temporário
-    mensagensConfessario.push({
+    mensagemIrmao.push({
         token: token,
         pergunta: mensagem,
         resposta: null, // Começa sem resposta
@@ -85,7 +121,7 @@ app.post('/api/enviar-mensagem', (req, res) => {
 // Nova rota para o usuário consultar
 app.get('/api/consultar-resposta/:token', (req, res) => {
     const tokenBusca = req.params.token.toUpperCase();
-    const registro = mensagensConfessario.find(m => m.token === tokenBusca);
+    const registro = mensagemIrmao.find(m => m.token === tokenBusca);
 
     if (!registro) {
         return res.json({ success: false, mensagem: "Token não encontrado." });

@@ -39,16 +39,20 @@
 
     <!--Inicio do Novo campo para resgate de resposta -->
         <div class="card border-0 shadow p-4 mt-4">
-            <h4 class="fw-bold text-center mb-3">Consultar Resposta</h4>
-            <p class="text-muted text-center small">Insira seu token para verificar se um administrador já respondeu ao seu desabafo.</p>
-            <div class="input-group mb-3">
-                <input type="text" id="inputToken" class="form-control" placeholder="Ex: A1B2C3D4">
-                <button class="btn btn-primary" type="button" id="btnConsultar">Consultar</button>
-            </div>
-            <!-- Local onde a resposta aparecerá -->
-            <div id="areaResposta" class="d-none alert alert-info mt-3">
-                <strong>Resposta do Administrador:</strong>
-                <p id="textoResposta" class="mb-0 mt-2"></p>
+            <div class="col-lg-6" style="margin: 0 auto;">
+                <div class="card border-0 shadow p-4">
+                    <h4 class="fw-bold text-center mb-3">Consultar Resposta</h4>
+                    <p class="text-muted text-center small">Insira seu token para verificar se um administrador já respondeu ao seu desabafo.</p>
+                    <div class="input-group mb-3">
+                        <input type="text" id="inputToken" class="form-control" placeholder="Ex: A1B2C3D4">
+                        <button class="btn btn-primary" type="button" id="btnConsultar">Consultar</button>
+                    </div>
+                    <!-- Local onde a resposta aparecerá -->
+                    <div id="areaResposta" class="d-none alert alert-info mt-3">
+                        <strong>Resposta do Administrador:</strong>
+                        <p id="textoResposta" class="mb-0 mt-2"></p>
+                    </div>
+                </div>
             </div>
         </div>
 
