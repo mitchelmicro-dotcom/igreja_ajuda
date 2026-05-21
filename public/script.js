@@ -78,4 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(data.mensagem);
         });
     }
+
+    //inicio do novo código para consulta de resposta do confessionário
+    const btnConsultar = document.getElementById('btnConsultar');
+        if (btnConsultar) {
+            btnConsultar.addEventListener('click', async () => {
+                const token = document.getElementById('inputToken').value;
+                const res = await fetch(`/api/consultar-resposta/${token}`);
+                const data = await res.json();
+                
+                const area = document.getElementById('areaResposta');
+                const texto = document.getElementById('textoResposta');
+                
+                area.classList.remove('d-none');
+                if (data.success) {
+                    texto.innerText = data.resposta;
+                } else {
+                    texto.innerText = data.mensagem;
+                }
+            });
+        }
 });

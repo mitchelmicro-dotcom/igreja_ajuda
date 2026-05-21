@@ -53,3 +53,46 @@ app.post('/api/doar', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor Elo Comunitário rodando em http://localhost:${PORT}`);
 });
+
+
+
+
+
+
+
+
+
+//inicio do novo código
+// No server.js, adicione um armazenamento para as mensagens inicio  --->
+let mensagensConfessario = []; 
+
+// Atualize a rota de envio para salvar a mensagem
+app.post('/api/enviar-mensagem', (req, res) => {
+    const { mensagem } = req.body;
+    const token = crypto.randomBytes(4).toString('hex').toUpperCase();
+    
+    // Salva o objeto no "banco" temporário
+    mensagensConfessario.push({
+        token: token,
+        pergunta: mensagem,
+        resposta: null, // Começa sem resposta
+        data: new Date()
+    });
+
+    res.json({ success: true, token: token });
+});
+
+// Nova rota para o usuário consultar
+app.get('/api/consultar-resposta/:token', (req, res) => {
+    const tokenBusca = req.params.token.toUpperCase();
+    const registro = mensagensConfessario.find(m => m.token === tokenBusca);
+
+    if (!registro) {
+        return res.json({ success: false, mensagem: "Token não encontrado." });
+    }
+    
+    res.json({ 
+        success: true, 
+        resposta: registro.resposta || "Sua mensagem ainda está sendo analisada. Por favor, volte mais tarde." 
+    });
+});
