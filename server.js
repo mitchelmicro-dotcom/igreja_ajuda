@@ -20,14 +20,8 @@ let versiculos = [
     { nome: "Irmã Maria", texto: "Tudo posso naquele que me fortalece." }
 ];
 
-//BANCO DE DADOS TEMPORÁRIO (Lista de Mensagens do Confessionário)
-let verciculo =[
-    { nome: "Irmão Michel", texto: "O Senhor é meu pastor, nada me faltará." },
-    { nome: "Irmã Maria", texto: "Tudo posso naquele que me fortalece." }
-]
-
 // ADICIONE ESTA LINHA PARA ARMAZENAR AS MENSAGENS DO CONFESSIONÁRIO
-let mensagensConfessario = [];
+let conselho = [];
 
 // --- ROTAS DA API ---
 
@@ -99,36 +93,23 @@ app.listen(PORT, () => {
 
 
 //inicio do novo código
-// No server.js, adicione um armazenamento para as mensagens inicio  --->
-let mensagemIrmao = []; 
 
-// Atualize a rota de envio para salvar a mensagem
-app.post('/api/enviar-mensagem', (req, res) => {
-    const { mensagem } = req.body;
-    const token = crypto.randomBytes(4).toString('hex').toUpperCase();
-    
-    // Salva o objeto no "banco" temporário
-    mensagemIrmao.push({
-        token: token,
-        pergunta: mensagem,
-        resposta: null, // Começa sem resposta
-        data: new Date()
-    });
-
-    res.json({ success: true, token: token });
-});
-
-// Nova rota para o usuário consultar
+// Nova rota para o usuário consultar a resposta do confessionário
 app.get('/api/consultar-resposta/:token', (req, res) => {
     const tokenBusca = req.params.token.toUpperCase();
-    const registro = mensagemIrmao.find(m => m.token === tokenBusca);
+    
+    // Procura o token dentro da nossa lista oficial "conselho"
+    const registro = conselho.find(m => m.token === tokenBusca);
 
     if (!registro) {
-        return res.json({ success: false, mensagem: "Token não encontrado." });
+        return res.json({ success: false, mensagem: "Token não encontrado. Verifique se digitou corretamente." });
     }
     
-    res.json({ 
-        success: true, 
-        resposta: registro.resposta || "Sua mensagem ainda está sendo analisada. Por favor, volte mais tarde." 
-    });
+    // Se achou, mas a resposta ainda está vazia
+    if (registro.resposta === '') {
+        return res.json({ success: true, resposta: "Sua mensagem ainda está sendo analisada. Por favor, volte mais tarde." });
+    }
+
+    // Se achou e tem resposta do administrador
+    res.json({ success: true, resposta: registro.resposta });
 });
