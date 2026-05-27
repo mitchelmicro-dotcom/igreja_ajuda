@@ -8,10 +8,21 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const crypto = require('crypto');
 
+//1. NOVO: Importamos a ferramenta de sessão que acabamos de instalar
+const session = require('express-session');
+
 const app = express();
 const PORT = 3000;
 
+// 2. NOVO: Configurando como a sessão vai funcionar (nosso novo "session_start()")
+app.use(session({
+    secret: 'chave-sercreta-doadmin-super-segura',// Uma senha interna para proteger a sessão (pode ser qualquer coisa, mas é recomendado algo complexo)
+    resave: false, // Não precisa salvar a sessão se ela não for modificada
+    saveuninitialized: false // Não precisa criar uma sessão para visitantes que não estão autenticados
+}));
+
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // BANCO DE DADOS TEMPORÁRIO (Lista de Versículos)
@@ -80,6 +91,27 @@ app.post('/api/doar', (req, res) => {
     console.log(`[DOAÇÃO] Intenção de R$ ${req.body.valor}`);
     res.json({ success: true, mensagem: "Obrigado por sua generosidade!" });
 });
+//==========================================================================
+
+// >>> NOVO CÓDIGO DE LOGIN<<<
+
+app.post('/valida_login', (req, res) => {
+    const email = req.body.email;
+    const senha = req.body.senha;
+
+    if(email === 'admin@igreja.com' && senha === 'admin123') {
+        //Se o login for válido, criamos a sessão e redirecionamos para o painel
+        req.session.autenticado = 'SIM';
+        console.log('[LOGIN] Administrador autenticado com sucesso!');
+        return res.redirect('/painel_admin.html');
+    } else {
+        //Se o login for inválido, redirecionamos de volta para a página de login com um aviso
+        console.log('[LOGIN] Tentativa de login falhou com email ou senha incorretos.' + ` Email: ${email} | Senha: ${senha}`);
+        return res.redirect('/index.html?login=erro');
+    }
+
+});
+
 
 // INICIAR SERVIDOR
 app.listen(PORT, () => {
@@ -87,10 +119,7 @@ app.listen(PORT, () => {
 });
 
 
-
-
-
-
+//==========================================================================
 
 //inicio do novo código
 
