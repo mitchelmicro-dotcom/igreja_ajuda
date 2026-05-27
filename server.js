@@ -24,6 +24,7 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/imagens', express.static(path.join(__dirname, 'imagens')));
 
 // BANCO DE DADOS TEMPORÁRIO (Lista de Versículos)
 let versiculos = [
@@ -107,7 +108,7 @@ app.post('/valida_login', (req, res) => {
     } else {
         //Se o login for inválido, redirecionamos de volta para a página de login com um aviso
         console.log('[LOGIN] Tentativa de login falhou com email ou senha incorretos.' + ` Email: ${email} | Senha: ${senha}`);
-        return res.redirect('/index.html?login=erro');
+        return res.redirect('/login.html?login=erro');
     }
 
 });
